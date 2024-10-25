@@ -12,6 +12,18 @@ create table eventos_passados (
     bola6 int
 );
 
+-- Quando for inserir um registro do tipo date, lembre de colocar a data entre '' 
+insert into eventos_passados (data_concurso, bola1, bola2, bola3, bola4, bola5, bola6) 
+	values ('2024-10-24', 03, 17, 18, 19, 20, 55);
+
+update eventos_passados
+set data_concurso = '2024-10-24'
+where id_concurso = 2789;
+
+CREATE TABLE numeros (
+    numero INT PRIMARY KEY
+);
+
 create table eventos_futuros (
 	id_eventoFuturo int primary key not null auto_increment,
     bola1 int,
@@ -22,8 +34,11 @@ create table eventos_futuros (
     bola6 int
 );
 
+delete from eventos_passados
+where id_concurso = 2789;
 select * from eventos_passados;
 select * from eventos_futuros;
+select * from numeros;
 
 -- Esta fazendo a média das bolas 
 select 
@@ -35,6 +50,9 @@ select
     avg(bola6) as media_bola6
 from 
 	eventos_passados;
+    
+SELECT STD(bola1) AS desvio_bola1, STD(bola2) AS desvio_bola2, STD(bola3) AS desvio_bola3, STD(bola4) AS desvio_bola4, STD(bola5) AS desvio_bola5, STD(bola6) AS desvio_bola6
+FROM eventos_passados;
     
 -- Está contando o número de aparições de 1 a 60
 SELECT numero, COUNT(*) AS total
@@ -84,12 +102,79 @@ SELECT
 FROM 
 	eventos_passados;
 
+-- Quais foram as datas e sequencias que apareceram o número 60
+select 
+	data_concurso, 
+    bola1, 
+    bola2, 
+    bola3, 
+    bola4, 
+    bola5, 
+    bola6
+from 
+	eventos_passados
+where bola6 = 60;
 
+-- Sequencia dentro de um intervalo de tempo
+select data_concurso, bola1, bola2, bola3, bola4, bola5, bola6
+from mega_sena 
+where data_concurso between '2024-01-01' and '2024-10-16';
 
+-- todas as ocorrencias de cada bola
+SELECT bola1, COUNT(*) AS ocorrencias 
+FROM eventos_passados
+GROUP BY bola1
+order by bola1 desc;
 
+SELECT bola2, COUNT(*) AS ocorrencias 
+FROM eventos_passados
+GROUP BY bola2
+order by ocorrencias desc;
 
+SELECT bola3, COUNT(*) AS ocorrencias 
+FROM eventos_passados
+GROUP BY bola3
+order by ocorrencias desc;
 
+SELECT bola4, COUNT(*) AS ocorrencias 
+FROM eventos_passados
+GROUP BY bola4
+order by ocorrencias desc;
 
+SELECT bola5, COUNT(*) AS ocorrencias 
+FROM eventos_passados
+GROUP BY bola5
+order by ocorrencias desc;
+
+SELECT bola6, COUNT(*) AS ocorrencias 
+FROM eventos_passados
+GROUP BY bola6
+order by ocorrencias desc;
+
+-- Criação da tabela de números de 1 a 60
+SELECT 
+    n.numero,
+    COALESCE(b1.ocorrencias, 0) AS bola1,
+    COALESCE(b2.ocorrencias, 0) AS bola2,
+    COALESCE(b3.ocorrencias, 0) AS bola3,
+    COALESCE(b4.ocorrencias, 0) AS bola4,
+    COALESCE(b5.ocorrencias, 0) AS bola5,
+    COALESCE(b6.ocorrencias, 0) AS bola6
+FROM 
+    numeros n
+LEFT JOIN 
+    (SELECT bola1 AS numero, COUNT(*) AS ocorrencias FROM eventos_passados GROUP BY bola1) b1 ON n.numero = b1.numero
+LEFT JOIN 
+    (SELECT bola2 AS numero, COUNT(*) AS ocorrencias FROM eventos_passados GROUP BY bola2) b2 ON n.numero = b2.numero
+LEFT JOIN 
+    (SELECT bola3 AS numero, COUNT(*) AS ocorrencias FROM eventos_passados GROUP BY bola3) b3 ON n.numero = b3.numero
+LEFT JOIN 
+    (SELECT bola4 AS numero, COUNT(*) AS ocorrencias FROM eventos_passados GROUP BY bola4) b4 ON n.numero = b4.numero
+LEFT JOIN 
+    (SELECT bola5 AS numero, COUNT(*) AS ocorrencias FROM eventos_passados GROUP BY bola5) b5 ON n.numero = b5.numero
+LEFT JOIN 
+    (SELECT bola6 AS numero, COUNT(*) AS ocorrencias FROM eventos_passados GROUP BY bola6) b6 ON n.numero = b6.numero
+ORDER BY n.numero;
 
 
 
