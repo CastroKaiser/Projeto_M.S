@@ -78,3 +78,28 @@ FROM (
 GROUP BY total
 HAVING COUNT(*) > 1  -- Filtra para mostrar apenas as contagens que têm mais de um número
 ORDER BY total DESC;  -- Ordena pela contagem total em ordem decrescente
+
+SELECT 
+	STD(bola1) AS desvio_bola1 
+FROM 
+	eventos_passados;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
