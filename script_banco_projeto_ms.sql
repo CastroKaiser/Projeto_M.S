@@ -36,6 +36,7 @@ create table eventos_futuros (
 
 delete from eventos_passados
 where id_concurso = 2789;
+
 select * from eventos_passados;
 select * from eventos_futuros;
 select * from numeros;
@@ -97,11 +98,6 @@ GROUP BY total
 HAVING COUNT(*) > 1  -- Filtra para mostrar apenas as contagens que têm mais de um número
 ORDER BY total DESC;  -- Ordena pela contagem total em ordem decrescente
 
-SELECT 
-	STD(bola1) AS desvio_bola1 
-FROM 
-	eventos_passados;
-
 -- Quais foram as datas e sequencias que apareceram o número 60
 select 
 	data_concurso, 
@@ -117,39 +113,8 @@ where bola6 = 60;
 
 -- Sequencia dentro de um intervalo de tempo
 select data_concurso, bola1, bola2, bola3, bola4, bola5, bola6
-from mega_sena 
+from eventos_passados
 where data_concurso between '2024-01-01' and '2024-10-16';
-
--- todas as ocorrencias de cada bola
-SELECT bola1, COUNT(*) AS ocorrencias 
-FROM eventos_passados
-GROUP BY bola1
-order by bola1 desc;
-
-SELECT bola2, COUNT(*) AS ocorrencias 
-FROM eventos_passados
-GROUP BY bola2
-order by ocorrencias desc;
-
-SELECT bola3, COUNT(*) AS ocorrencias 
-FROM eventos_passados
-GROUP BY bola3
-order by ocorrencias desc;
-
-SELECT bola4, COUNT(*) AS ocorrencias 
-FROM eventos_passados
-GROUP BY bola4
-order by ocorrencias desc;
-
-SELECT bola5, COUNT(*) AS ocorrencias 
-FROM eventos_passados
-GROUP BY bola5
-order by ocorrencias desc;
-
-SELECT bola6, COUNT(*) AS ocorrencias 
-FROM eventos_passados
-GROUP BY bola6
-order by ocorrencias desc;
 
 -- Criação da tabela de números de 1 a 60
 SELECT 
@@ -175,6 +140,9 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT bola6 AS numero, COUNT(*) AS ocorrencias FROM eventos_passados GROUP BY bola6) b6 ON n.numero = b6.numero
 ORDER BY n.numero;
+
+
+
 
 
 
